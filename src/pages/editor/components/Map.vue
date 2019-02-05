@@ -9,9 +9,9 @@ import Map from "./MapClass";
 @Component
 export default class MapComponent extends Vue {
   @Prop() public layerDefinitions!: any[];
+  @Prop() public basemap!: string;
 
   private map: Map = new Map();
-
 
   public mounted() {
     // TODO: Use real credentials here, why cartovl works? :S
@@ -27,6 +27,11 @@ export default class MapComponent extends Vue {
   @Watch("layerDefinitions")
   private async renderLayers() {
     await this.map.renderLayers(this.layerDefinitions);
+  }
+
+  @Watch("basemap")
+  private async setBasemap() {
+    await this.map.setBasemap(this.basemap);
   }
 }
 </script>

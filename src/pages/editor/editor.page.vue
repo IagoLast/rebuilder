@@ -6,7 +6,7 @@
       </aside>
       <main class="as-main">
         <div class="as-map-area">
-          <Map v-if="layerDefinitions" id="map" :layerDefinitions="layerDefinitions"></Map>
+          <Map v-if="layerDefinitions" id="map" :layerDefinitions="layerDefinitions" :basemap="basemap"></Map>
         </div>
       </main>
     </div>
@@ -29,6 +29,10 @@ export default class Home extends Vue {
 
   get layerDefinitions(): ILayerDefinition[] {
     return this.$store.getters["editor/layers"] as ILayerDefinition[];
+  }
+
+  get basemap() {
+    return this.$store.getters["editor/basemap"];
   }
 
   public onLogin() {

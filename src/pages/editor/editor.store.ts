@@ -6,16 +6,16 @@ Vue.use(Vuex);
 const loginStore: Module<any, any> = {
   namespaced: true,
   state: {
-    layers: []
+    layers: [],
+    basemap: "voyager",
   },
   getters: {
-    layers: state => state.layers
+    layers: state => state.layers,
+    basemap: state => state.basemap,
   },
   mutations: {
     addLayer(state, layerDefinition) {
       if (layerDefinition) {
-        Object.freeze(layerDefinition.viz);
-        Object.freeze(layerDefinition.source);
         state.layers.push(layerDefinition);
       }
     },
@@ -29,6 +29,9 @@ const loginStore: Module<any, any> = {
         }
         return layer;
       });
+    },
+    setBasemap(state, name) {
+      state.basemap = name;
     }
   },
   actions: {
@@ -40,6 +43,9 @@ const loginStore: Module<any, any> = {
     },
     deleteLayer({ commit }, { id }) {
       commit("deleteLayer", id);
+    },
+    setBasemap({commit}, name) {
+      commit("setBasemap", name);
     }
   }
 };

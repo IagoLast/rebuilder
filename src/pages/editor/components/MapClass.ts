@@ -25,6 +25,22 @@ export default class MapClass {
     layerDefinitions.map(this.addLayerFromDefinition.bind(this));
   }
 
+  public setBasemap(name: string) {
+    name = name.toLowerCase();
+    switch (name) {
+      case "voyager":
+        this.map.setStyle("https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json");
+        return;
+      case "positron":
+        this.map.setStyle("https://basemaps.cartocdn.com/gl/positron-gl-style/style.json");
+        return;
+      case "darkmatter":
+        this.map.setStyle("https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json");
+        return;
+      default:
+        break;
+    }
+  }
   private hasLayer(layerID: any) {
     return this.layers.some(l => l.id === layerID);
   }

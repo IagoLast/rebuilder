@@ -13,7 +13,7 @@
       <!-- <button @click="deleteLayer" class="as-btn as-btn--secondary">DELETE LAYER </button> -->
     </section>
     <aside class="footer">
-      <textarea @input="oninput" name="viz" id="viz" cols="30" rows="10"></textarea>
+      <textarea v-model="viz" name="viz" id="viz" cols="30" rows="10"></textarea>
     </aside>
   </div>
 </template>
@@ -26,15 +26,24 @@ import { Component, Vue } from "vue-property-decorator";
 export default class AddLayerPage extends Vue {
   private id!: string;
 
-  public mounted() {
-    this.id = this.$route.params.id;
+  get viz(): string {
+    const layer = this.$store.getters["editor/layers"].find((layer: any) => layer.id === this.id);
+    if (!layer) {
+      return "";
+    }
+    return layer.viz;
   }
 
-  public oninput({ target }: { target: HTMLTextAreaElement }) {
+  set viz(value: string) {
     this.$store.dispatch("editor/updateViz", {
       id: this.id,
-      viz: target.value
+      viz: value
     });
+  }
+
+  public mounted() {
+    this.id = this.$route.params.id;
+    this.viz = this.$store.getters["editor/layers"].find((layer: any) => layer.id === this.id).viz;
   }
 
   public deleteLayer() {
