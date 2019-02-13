@@ -3,15 +3,13 @@
     <header class="as-p--16">
       <h1 class="as-title as-m--0">Edit Layer</h1>
     </header>
-    <section>
-      <h4 class="as-subheader">Color</h4>
-      <h4 class="as-subheader">Width</h4>
-      <h4 class="as-subheader">StrokeColor</h4>
-      <h4 class="as-subheader">StrokeWidth</h4>
+
+    <section class="tutorial">
+      <h1 class="as-subheader"> DEMO </h1>
+      <button class="as-btn as-btn--secondary" @click="prev"> PREV STYLE </button>
+      <button class="as-btn as-btn--secondary" @click="next"> NEXT STYLE  </button>
     </section>
-    <section class="actions-section">
-      <!-- <button @click="deleteLayer" class="as-btn as-btn--secondary">DELETE LAYER </button> -->
-    </section>
+
     <aside class="footer">
       <textarea v-model="viz" name="viz" id="viz" cols="30" rows="10"></textarea>
     </aside>
@@ -20,14 +18,58 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {}
-})
+@Component
 export default class AddLayerPage extends Vue {
   private id!: string;
+  private index = 0;
+  private styles = [
+`width: 7
+color: red
+strokeWidth: 1
+strokeColor: white
+`,
+`width: 7
+color: blue
+strokeWidth: 1
+strokeColor: white
+`,
+`width: 7
+color: rgba(204,0,0,0.2)
+strokeColor: opacity(white, 0.2)
+`,
+`
+width: 7
+color: opacity(green, 0.3)
+strokeColor: opacity(white, 0.2)
+`,
+`width: $amount / 100
+color: red
+strokeWidth: 0
+`,
+`width: $amount / 100
+color: red
+strokeWidth: 0
+filter: $amount > 10000
+`,
+`width: $amount / 100
+color: ramp($amount, PEACH)
+strokeWidth: 0
+filter: $amount > 1000
+`,
+`width: $amount / 100
+color: ramp($amount, PEACH)
+strokeWidth: 0
+filter: $amount > 250
+`,
+`width: $amount / 100
+color: ramp($category, prism)
+strokeWidth: 0
+filter: animation($date, 20, fade(1, 1))
+`
+];
 
   get viz(): string {
-    const layer = this.$store.getters["editor/layers"].find((layer: any) => layer.id === this.id);
+    const layer = this.$store.getters["editor/layers"].find((l: any) => l.id === this.id);
     if (!layer) {
       return "";
     }
@@ -50,6 +92,20 @@ export default class AddLayerPage extends Vue {
     this.$store.dispatch("editor/deleteLayer", { id: this.id });
     this.$router.push("/editor");
   }
+
+  public next() {
+    this.$store.dispatch("editor/updateViz", {
+      id: this.id,
+      viz: this.styles[this.index++]
+    });
+  }
+
+  public prev() {
+    this.$store.dispatch("editor/updateViz", {
+      id: this.id,
+      viz: this.styles[this.index--]
+    });
+  }
 }
 </script>
 
@@ -65,24 +121,16 @@ header {
   color: white;
   background-color: var(--as--color--secondary);
 }
-
-section {
-  overflow: scroll;
-  max-height: calc(100% - 64px);
+.tutorial {
 
   .as-subheader {
     background: var(--as--color--ui-02);
     padding: 8px 16px;
     margin: 0;
   }
-}
 
-.actions-section {
-  padding: 16px;
-
-  button {
-    width: 100%;
-    justify-content: center;
+  .as-btn {
+    margin: 16px 0 0 16px;
   }
 }
 
