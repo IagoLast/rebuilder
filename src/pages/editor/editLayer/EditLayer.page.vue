@@ -62,7 +62,12 @@ strokeWidth: 0
 filter: $amount > 250
 `,
 `width: $amount / 100
-color: ramp($category, prism)
+color: ramp($category, PRISM)
+strokeWidth: 0
+filter: $amount > 250
+`,
+`width: $amount / 100
+color: ramp($category, PRISM)
 strokeWidth: 0
 filter: animation($date, 20, fade(1, 1))
 `
